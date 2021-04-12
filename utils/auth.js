@@ -1,6 +1,10 @@
 const jwt=require('jsonwebtoken');
-module.exports={async function (req,res,next){
+module.exports={
+	verify:async function (req,res,next){
 	try{
+		if(!req.headers["auth"]){
+			throw "3eb kda";
+		}
 		let token=req.headers['auth'].split('Bearer ');
 		console.log(token);
 		token=token[1];

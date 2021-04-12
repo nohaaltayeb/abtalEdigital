@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const {User} =require("../models");
 const bcrypt= require("bcrypt");
-const verify = require("../utils/auth")
+const {verify} = require("../utils/auth")
 const jwt = require("jsonwebtoken");
 module.exports = router
 
@@ -28,7 +28,7 @@ router.post("/users/register",async function(req,res, next){
     })
 
     //Login 
-router.post("/users/Login/", verify,async (req,res)=>{
+router.post("/users/Login/",async (req,res)=>{
   const users= await User.findOne({
     where:{ username:req.body.username}
  });
@@ -45,7 +45,7 @@ router.post("/users/Login/", verify,async (req,res)=>{
 //create and assign jwt
 
 const token = jwt.sign({id:users.id},"SECRET");
-res.header('auth_token', token).send(token);
+return res.header('auth_token', token).send(token);
 
 })
 
@@ -65,6 +65,7 @@ router.put("/users/:id",
    
 
 router.get("/users",
+    verify,
     async (req, res)=>{
         const users = await User.findAll();
         if (!users){
