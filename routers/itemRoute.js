@@ -1,16 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const {item, category} =require("../models");
-
+const {verify} = require("../utils/auth")
 module.exports = router
 
 
 
 //add new items
-router.post("/item/",async function(req,res, next){
+router.post("/item/",verify,async function(req,res, next){
         const items = await item.create({
             name:req.body.name,
-            categoryId:req.body.categoryId
+            categoryId:req.body.categoryId,
+            userId:req.user.id
         })
         try{
             res.status(200).send(items)
@@ -23,7 +24,7 @@ router.post("/item/",async function(req,res, next){
     })
 
 //find items of specific category 
-router.get("/item/:categoryId", async (req,res)=>{
+router.get("/item/:categoryId", verify,async (req,res)=>{
     const items = await item.findAll({
         where:{categoryId:req.params.categoryId}
     })
@@ -36,7 +37,7 @@ router.get("/item/:categoryId", async (req,res)=>{
 
 //update with item's id
 //
-router.put("/item/:id",
+router.put("/item/:id",verify,
     async function(req, res){
         const items = await item.update({
             name:req.body.name,
@@ -51,6 +52,7 @@ router.put("/item/:id",
    
 //get all items
 router.get("/item/",
+verify,
     async (req, res)=>{
         const items = await item.findAll();
         if (!items){
@@ -63,7 +65,7 @@ router.get("/item/",
 
     })
 //delet item with its id
-router.delete("/item/:id",
+router.delete("/item/:id",verify,
     async (req, res)=>{
         const items = await item.destroy({
           where:{id:req.params.id}
@@ -75,7 +77,7 @@ router.delete("/item/:id",
     })
 
 //delete items of specific category 
-router.delete("/item/categorId", async(req,res)=>{
+router.delete("/item/categorId", verify,async(req,res)=>{
     const items = await item.destroy({
         where:{categoryId:req.params.categoryId}
     })
@@ -87,4 +89,4 @@ router.delete("/item/categorId", async(req,res)=>{
     }
   
 })
-module.exports =router;
+module.exports =router;``

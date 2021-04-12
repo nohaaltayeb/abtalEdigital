@@ -65,7 +65,6 @@ router.put("/users/:id",
    
 
 router.get("/users",
-    verify,
     async (req, res)=>{
         const users = await User.findAll();
         if (!users){

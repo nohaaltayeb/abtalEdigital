@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const users = require("./routers/userRoute")
 const categories = require("./routers/categoryRoute")
 const items = require("./routers/itemRoute")
-
+const {verify}=require("./utils/auth");
 const app = express();
 
 
@@ -12,6 +12,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/',users);
+
+/*app.use('/',verify,function(req,res,next){
+    next();
+});
+*/
 //app.use('/',routes);
 app.use('/',items);
 app.use('/',categories);

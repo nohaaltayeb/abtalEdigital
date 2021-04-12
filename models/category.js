@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       category.belongsTo(User, {foreignKey:"userId"});
       //category.hasMany(category_items);
-      category.belongsToMany(item, {through:"category_items"}, {foreignKey:"categoryId"});
+      //category.belongsToMany(item, {through:"category_items"}, {foreignKey:"categoryId"});
+      category.hasMany(item, {foreignKey:"categoryId"})
     }
   };
   category.init({
